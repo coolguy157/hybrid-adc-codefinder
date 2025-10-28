@@ -1,0 +1,11 @@
+{"n": 5, "d": 1, "is_indecomposable": false, "type": 1, "graph6_string": "DAK", "adjacency_matrix": [[0, 0, 0, 0, 0], [0, 0, 0, 1, 0], [0, 0, 0, 0, 1], [0, 1, 0, 0, 1], [0, 0, 1, 1, 0]]}
+{"n": 5, "d": 1, "is_indecomposable": false, "type": 1, "graph6_string": "D?[", "adjacency_matrix": [[0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 1, 1, 1, 0]]}
+{"n": 5, "d": 1, "is_indecomposable": false, "type": 1, "graph6_string": "DGC", "adjacency_matrix": [[0, 0, 0, 0, 0], [0, 0, 1, 0, 0], [0, 1, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0]]}
+{"n": 5, "d": 1, "is_indecomposable": false, "type": 1, "graph6_string": "D?K", "adjacency_matrix": [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 0, 1, 1, 0]]}
+{"n": 5, "d": 1, "is_indecomposable": false, "type": 1, "graph6_string": "D?C", "adjacency_matrix": [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0]]}
+{"n": 5, "d": 1, "is_indecomposable": false, "type": 1, "graph6_string": "D??", "adjacency_matrix": [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]}
+{"n": 5, "d": 2, "is_indecomposable": false, "type": 1, "graph6_string": "D@o", "adjacency_matrix": [[0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 0, 1, 0, 0], [1, 1, 0, 0, 0]]}
+{"n": 5, "d": 2, "is_indecomposable": true, "type": 1, "graph6_string": "D?{", "adjacency_matrix": [[0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [1, 1, 1, 1, 0]]}
+{"n": 5, "d": 2, "is_indecomposable": true, "type": 1, "graph6_string": "DBw", "adjacency_matrix": [[0, 0, 0, 0, 1], [0, 0, 0, 1, 1], [0, 0, 0, 1, 1], [0, 1, 1, 0, 0], [1, 1, 1, 0, 0]]}
+{"n": 5, "d": 2, "is_indecomposable": true, "type": 1, "graph6_string": "D@s", "adjacency_matrix": [[0, 0, 0, 0, 1], [0, 0, 0, 0, 1], [0, 0, 0, 1, 0], [0, 0, 1, 0, 1], [1, 1, 0, 1, 0]]}
+{"n": 5, "d": 3, "is_indecomposable": true, "type": 1, "graph6_string": "DqK", "adjacency_matrix": [[0, 1, 1, 0, 0], [1, 0, 0, 1, 0], [1, 0, 0, 0, 1], [0, 1, 0, 0, 1], [0, 0, 1, 1, 0]]}

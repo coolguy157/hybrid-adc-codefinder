@@ -1,0 +1,5 @@
+
+Some of the larger database files come gzipped. The database will now load these so you do not need to unzip them. If you would prefer to have them as json text files then they can simply be unzipped with gunzip. The library will load them.
+
+If both the gzipped file and the text file exit then the json text file will be used.
+
