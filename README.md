@@ -26,6 +26,6 @@ For each graph $G$ and each LC-equivalent error set:
 
 ### **Phase 5: Hybrid Partitioning and Verification**
 11. **Partition into Subcodes:** Divide the discovered classical code $C$ into $M$ orthogonal subcodes $\{C(\nu)\}$, where each subcode represents a different classical message $\nu$.
-12. **Verify Hybrid Knill-Laflamme Conditions:** Ensure the subcodes satisfy the hybrid error correction condition: $\langle c(\nu)_i | E^\dagger_k E_l | c(\mu)_j \rangle = \alpha^{(\nu)}_{kl} \delta_{ij} \delta_{\mu\nu}$ [Grassl et al., 2017; Nemec, 2025]. This confirms that:
+12. **Verify Hybrid Knill-Laflamme Conditions:** Ensure the subcodes satisfy the hybrid error correction condition: $$\langle c(\nu)_i | E^\dagger_k E_l | c(\mu)_j \rangle = \alpha^{(\nu)}_{kl} \delta_{ij} \delta_{\mu\nu}$$ [Grassl et al., 2017; Nemec, 2025]. This confirms that:
     *   Quantum information is corrected within each subcode [Grassl et al., 2017].
     *   Classical messages $\nu$ are distinguishable from $\mu$ after channel noise [Grassl et al., 2017].
