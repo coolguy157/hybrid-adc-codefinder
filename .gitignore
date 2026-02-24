@@ -1,3 +1,6 @@
 ./qiskit-qec/.gitignore
 thebigselfdualfile.txt
 preprocessed_data/candidates_n12.jsonl
+.vscode/
+__pycache__/
+/old/__pycache__/
