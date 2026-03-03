@@ -1,37 +1,41 @@
-## The plan:
-The following updated procedure for an exhaustive search program incorporates the **LC-inequivalent graph database** and integrates specific methodologies from the provided research papers.
+The graph-based method for searching for codes over the **amplitude damping (AD)** channel relies on the **Codeword Stabilized (CWS)** framework, which translates the quantum error-correction problem into a classical search for a **maximum clique** in an induced graph [Chuang et al., 2009; Rigby et al., 2019].
 
-### **Phase 1: Search Space Definition & Database Integration**
-1.  **Define Target Parameters:** Establish the code length $n$, number of logical qubits $k$, and classical messages $M$ based on existing theoretical performance limits [Grassl et al., 2017].
-2.  **Load Orbit Representatives ($L_n$):** Retrieve the set of non-LC-isomorphic graph representatives for length $n$ directly from the database to prune the search space from $2^{n^2}$ to a manageable size [Danielsen and Parker, 2006; Rigby et al., 2019]. 
-3.  **Generate LC-Equivalent Error Sets:** For asymmetric channels (like **Amplitude Damping**), generate the three distinct LC-equivalent error sets ($E$, $E_{XZ}$, $E_{YZ}$) for each graph to account for the channel's lack of LC-invariance [Jackson et al., 2016; Rigby et al., 2019].
+The following steps detail the search process and explain what each graph represents in terms of quantum codes:
 
-### **Phase 2: Heuristic Filtering for Efficiency**
-4.  **Load the entire list of [adjacency matrices](https://web.archive.org/web/20240803110852/https://www.ii.uib.no/~larsed/vncorbits/) and iterate through them one-by-one.**
+### **1. Initialization: Loading Graph State Representatives**
+The program begins by loading a set of **undirected graphs ($L_n$)** that are inequivalent under local Clifford (LC) operations [Rigby et al., 2019]. 
+*   **Quantum Correspondence:** Each graph $G$ in the database corresponds to a **graph state $|G\rangle$**, which serves as the **codeword stabilizer state**—the fundamental "seed" state that defines the basis of the quantum code [Cross et al., 2009; Chuang et al., 2009].
 
-### **Phase 3: CWS Setup and Graph Construction**
-For each graph $G$ and each LC-equivalent error set:
+### **2. Asymmetric Error Model Mapping**
+Because the AD channel is asymmetric, the program must represent its Kraus operators ($A_0, A_1$) in terms of their **linear span in the Pauli group** [Jackson et al., 2016]. For a code to correct $t$ errors, it must detect the set $E\{t\}$, which includes Pauli $X$ and $Y$ operators (representing bit flips and combined flips) and $Z$ operators (representing phase flips) [Jackson et al., 2016].
+*   **Asymmetry Handling:** Unlike the depolarizing channel, AD errors are not invariant under LC operations [Jackson et al., 2016]. Therefore, for every graph $G$, the program must test **three LC-equivalent orientations** of the error set: the base set ($E$), a set with $X \leftrightarrow Z$ swapped ($E_{XZ}$), and a set with $Y \leftrightarrow Z$ swapped ($E_{YZ}$) [Jackson et al., 2016; Rigby et al., 2019].
 
-6.  **Map Classical Error Patterns ($Cl_G(E)$):** Transform every quantum Pauli error into its binary classical representation induced by the graph state using the $X-Z$ rule [Chuang et al., 2009; Cross et al., 2009].
-(Essentially, you are converting all XYZ mized errors into just Z errors)
+### **3. Applying the X-Z Rule: Induced Classical Errors**
+For each graph and each error set orientation, the program uses the **X-Z rule** to map quantum Pauli errors into binary strings [Cross et al., 2009]. An $X$ error at node $i$ is "pushed" along the edges of the graph state to become a $Z$ error on all neighboring nodes [Cross et al., 2009; Rigby et al., 2019].
+*   **Quantum Correspondence:** This mapping, $Cl_G(E) = v \oplus u\Gamma$ (where $\Gamma$ is the adjacency matrix), transforms the complex quantum noise model into a **classical bit-flip error model** [Chuang et al., 2009; Cross et al., 2009].
 
-7.  **Identify Inadmissible Strings ($D_G(E)$):** Identify bit strings that violate the commutation conditions necessary for degenerate codes, which are common in AD channels [Chuang et al., 2009; Jackson et al., 2016].
+### **4. Degeneracy Filtering: Identifying Inadmissible Strings**
+The program identifies a set of bit strings $D_G(E)$ that are "inadmissible" because they violate the commutation requirements for **degenerate codes** [Chuang et al., 2009]. 
+* If the error mapping $Cl_G$ is nonzero, then it is detectable , otherwise we need to check if it actually affects the code, so the error must commute with all chosen codeword operators
+### **2. The Secondary Check: Commutation for Degeneracy**
+When a quantum error maps to zero, the result is only valid if the error $E$ **commutes** with all chosen codeword operators $Z_c$. 
+*   **The Algebraic Requirement:** For a codeword $c$ to be admissible when $Cl_G(E) = 0$, the condition $Z_c E = E Z_c$ must be met.
+*   **The Binary String Check:** In standard form, this commutation check is simplified to a binary inner product: $c \cdot u = 0$, where $u$ is the string representing the locations of $X$ operators in the error $E$. 
 
-8.  **Build the CWS Clique Graph:** Construct a graph where vertices are admissible binary strings and edges connect strings whose XOR sum does not result in an induced classical error [Chuang et al., 2009].
+*   **Populating $Cl_G(E)$:** If the result is non-zero, the string is marked in the set of classical errors that the code's distance must account for.
+*   **Pruning via $D_G(E)$:** If the result is zero, the program iterates through all possible $n$-bit strings $i$. Any string where the inner product $i \cdot u \neq 0$ is added to the **inadmissible set $D_G(E)$**. These strings are subsequently removed from the pool of potential vertices for the CWS clique graph, ensuring any found code automatically satisfies the diagonal Knill-Laflamme conditions. 
+*   **Quantum Correspondence:** Degeneracy is critical for AD channels as it allows some low-weight errors to act as a multiple of identity on the code space [Jackson et al., 2016]. These bit strings correspond to quantum basis vectors that would be corrupted by errors mapping to the zero classical string [Chuang et al., 2009; Jackson et al., 2016].
 
-### **Phase 4: Algorithmic Clique Search**
-9.  **Execute Search Algorithm:** 
-    *   For small $n$, use exact maximum clique finders.
-    *   For $n \ge 9$ or distance $d=2$, use the **Phased Local Search (PLS)** heuristic to find the target clique size $K = 2^k \cdot M$ [Rigby et al., 2019].
-10. **Store Successful Candidates:** If a clique of size $K$ is found, record the adjacency matrix and classical codewords [Chuang et al., 2009].
+### **5. Construction of the CWS Clique Graph**
+The program constructs a new graph, the **CWS clique graph ($GE$)**, which is used solely for the search [Chuang et al., 2009].
+*   **Vertices ($V$):** Each vertex in the clique graph corresponds to an **admissible binary string** $x$ that can potentially be used as a codeword [Chuang et al., 2009].
+*   **Edges ($E$):** An edge connects two vertices $x_i, x_j$ if their XOR sum is not an element of the induced classical error set $Cl_G(E)$ [Chuang et al., 2009]. 
+*   **Quantum Correspondence:** This graph represents the **compatibility** of basis vectors. If two vertices share an edge, the corresponding quantum states $|x_i\rangle, |x_j\rangle$ (formed by applying $Z^{x_i}$ to the graph state) remain orthogonal even after the channel noise occurs [Chuang et al., 2009; Cross et al., 2009].
 
-### **Phase 5: Hybrid Partitioning and Verification**
-11. **Partition into Subcodes:** Divide the discovered classical code $C$ into $M$ orthogonal subcodes $\{C(\nu)\}$, where each subcode represents a different classical message $\nu$.
-12. **Verify Hybrid Knill-Laflamme Conditions:** Ensure the subcodes satisfy the hybrid error correction condition: 
-$$\langle c(\nu)_i | E^\dagger_k E_l | c(\mu)_j \rangle = \alpha^{(\nu)}_{kl} \delta_{ij} \delta_{\mu\nu}$$
- [Grassl et al., 2017; Nemec, 2025]. This confirms that:
-    *   Quantum information is corrected within each subcode [Grassl et al., 2017].
-    *   Classical messages $\nu$ are distinguishable from $\mu$ after channel noise [Grassl et al., 2017].
+### **6. Maximum Clique Search and Hybrid Partitioning**
+The program executes a search algorithm (like **Phased Local Search**) to find the largest possible **clique** of size $K$ in the clique graph [Rigby et al., 2019]. 
+*   **Quantum Correspondence:** The found clique $C$ defines the **word operators** $W = \{Z^c : c \in C\}$ of the quantum code [Chuang et al., 2009].
+*   **Hybrid Codes:** For **hybrid quantum-classical codes**, the clique is further partitioned into $M$ subcodes $\{C(\nu)\}$. Each subcode protects $k$ qudits while its index $\nu$ encodes a **classical message** [Grassl et al., 2017; Nemec, 2025]. The program then verifies that errors do not map one subcode's subspace into another, satisfying the **Hybrid Knill-Laflamme condition** [Grassl et al., 2017; Nemec, 2025].
 
 ---
 
