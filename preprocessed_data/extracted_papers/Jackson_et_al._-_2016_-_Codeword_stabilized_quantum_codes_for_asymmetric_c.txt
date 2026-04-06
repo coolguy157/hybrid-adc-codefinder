@@ -1,0 +1,582 @@
+Codeword Stabilized Quantum Codes for
+Asymmetric Channels
+Tyler Jackson∗†, Markus Grassl‡§, and Bei Zeng∗†¶
+∗Department of Mathematics & Statistics, University of Guelph, Guelph, Ontario, N1G 2W1, Canada
+†Institute for Quantum Computing, University of Waterloo, Waterloo, Ontario, N2L 3G1, Canada
+‡Institut f ¨ur Optik, Information und Photonik, Universit ¨at Erlangen-N ¨urnberg, 91058 Erlangen, Germany
+§Max-Planck-Institut f ¨ur die Physik des Lichts, Leuchs Division, 91058 Erlangen, Germany
+¶ Canadian Institute for Advanced Research, Toronto, Ontario, M5G 1Z8, Canada
+Abstract—In this study we present a method that adapts the
+codeword stabilized (CWS) quantum code framework to the
+problem of ﬁnding asymmetric quantum codes. Making use of
+the the corresponding Pauli error models for amplitude and
+phase-damping models, we focus on codes that correct one
+or two amplitude-damping errors. As a result, we are able
+to exhaustively search for all possible codes up to length 9
+by applying local Clifford operations on graph states. With a
+similar method, we also look at codes for the Pauli error models
+that detect a single amplitude error and detect multiple phase
+damping errors. Many new codes with good parameters are
+found, including non-additive codes and degenerate codes.
+Index Terms—codeword stabilized quantum code, non-additive
+code, asymmetric code, amplitude damping channel, phase damp-
+ing channel
+I. I NTRODUCTION
+Codeword stabilized (CWS) quantum codes constitute by
+far the most general systematic framework for constructing
+quantum error-correcting codes (QECC) [6], [7], [9]. It en-
+compasses stabilizer codes [4], [5], [14], [33], as well as many
+nonadditive codes with good parameters [23], [28], [36]. Over
+the past years, it has been explored in various settings and has
+been applied in many different cases, leading to promising
+results [2], [15]–[17], [20], [25], [26], [34].
+Most of the QECC constructed so far are for the depolariz-
+ing channel, where the Pauli X, Y, Z errors are equally likely
+to occur:
+EDP(ρ) = (1− p)ρ + p
+3 (XρX + Y ρY + ZρZ ), (1)
+where ρ denotes the density matrix representing the state
+of the quantum system. The most general quantum channels
+allowed by quantum mechanics are completely positive, trace-
+preserving linear maps that can be represented in the Kraus
+decomposition:E(ρ) =∑
+k EkρE†
+k with∑
+k E†
+kEk = I [27].
+The expression for the depolarizing channel (E DP) can be
+generalized by looking at the asymmetric Pauli channels:
+(1− px− py− pz)ρ + pxXρX + pyY ρY + pzZρZ, (2)
+In this case, the Pauli X, Y, Z errors occur with probabilities
+px, py, pz, respectively [21]. Other asymmetric channels stud-
+ied in the literature include the amplitude damping channel: [8]
+EAD(ρ) = A0ρA†
+0 + A1ρA†
+1, (3)
+where
+A0 =
+(1 0
+0 √
+1− γ
+)
+, A 1 =
+(0 √γ
+0 0
+)
+, (4)
+for some damping parameter γ.
+It has been demonstrated that adapting QECC to speciﬁc
+error models can result in better codes [8], [11]–[13], [23],
+[24], [30]–[32] and fault-tolerant protocols [1]. Although most
+of these codes are CWS codes, to this date there has been
+no systematic construction that applies the CWS framework
+to solve these problems. In this work, we ﬁll this gap by
+developing a method for ﬁnding CWS codes for asymmetric
+channels. Our method leads to many new codes with good pa-
+rameters, including non-additive codes and degenerate codes.
+These results demonstrate the power of the CWS framework
+for constructing good QECCs.
+II. E RROR MODELS
+Depending on the noise model in different physical systems,
+we obtain different asymmetric quantum channels. We start
+with the amplitude damping channelEAD with Kraus operators
+given in Eq. (4), which models real physical processes such as
+spontaneous emission. If the system is at ﬁnite temperature,
+then the noise model will not only contain the Kraus operator
+A1 corresponding to emission, but also A†
+1 corresponding to
+absorption [27]. Notice that
+A1 =
+√
+γ
+2 (X + iY ), A †
+1 =
+√γ
+2 (X− iY ). (5)
+Hence, the linear span of the operators A1 and A†
+1 equals the
+linear span of X and Y . We can then equivalently formulate
+the error model by using the Pauli operators X and Y , which
+happen with equal probability. That is, if a code is capable of
+correcting t X - and t Y -errors, it can also correct t A 1- and
+t A†
+1-errors.
+Furthermore, notice that
+A0 = I− γ
+4 (I− Z) + O(γ2), (6)
+while A1 depends linearly on √γ. This then results in an
+asymmetry between the probabilities (p x = py and pz) that
+the Pauli X, Y or Z errors, respectively, occur.
+2016 IEEE International Symposium on Information Theory
+978-1-5090-1806-2/16/$31.00 ©2016 IEEE 2264
+
+Apart from amplitude damping, another common noise in
+physical systems is dephasing, with Kraus operators given by√1− pI and√p(I± Z)/2, or equivalently, in terms of I and
+Z with pz > 0 and px = py = 0 [27]. In general, the system
+undergoes both amplitude damping and dephasing, resulting
+in a wide range for the parameters px = py and pz.
+Therefore, in this work we consider the following asymmet-
+ric Pauli channel:
+EAS(ρ) = (1− (2pxy + pz))ρ
++ pxy(XρX + Y ρY ) + pzZρZ, (7)
+where X and Y happen with equal probability px = py = pxy.
+In terms of Eq. (7), the asymmetric Pauli error model
+corresponding to amplitude damping is given by pxy ∝ γ
+and pz∝ γ2. This is different from the amplitude damping
+error model in, e.g., [11], [18], [23], [24], [32], where the
+Kraus operators A0 and A1 are used. The main reason that
+we use the Pauli Kraus operators as our error sets is that it
+enables us to use the CWS framework to construct codes.
+Within the CWS framework, in order to transform the quantum
+error detection condition into a classical condition, it is more
+convenient to use Pauli errors, as we will discuss in Sec. III.
+In other words, since A0 and A1 are not Pauli operators, the
+CWS framework does not directly apply. Furthermore, due to
+Eq. (5) and Eq. (6), our error model does not only correct the
+errors A0 and A1, but the resulting codes will be stronger in
+the sense that A†
+1 can be corrected as well.
+In this work we consider three speciﬁc cases for asymmetric
+codes, as listed below. We use Xi, Yi, Zi to denote the Pauli
+X, Y, Z operators on the ith qubit. Notice that our method
+for generating the error sets is very general and can be
+straightforwardly generalized to deal with different relations
+between px, py, and pz.
+1. Codes correcting a single amplitude damping error: to
+improve the ﬁdelity of the transmitted state from 1− γ
+to 1−γ2, one only needs to correct a single A1 error and
+detect a single A0 error [18]. In terms of Pauli operators,
+the corresponding error set is given by
+E{1} ={I}∪{X i, Yi, Zi, XiXj, YiYj, XiYj, YiYj},
+(8)
+where i, j = 1, . . . , n. A code that detects this error set
+in fact also corrects a single A†
+1 error.
+2. Codes correcting two amplitude damping errors: based
+on the analysis on the single error case above, the error
+set is given by
+E{2} ={EµEν : Eµ, Eν∈E{1}}. (9)
+A code that detects this error set in fact also corrects
+two A†
+1 errors.
+3. Codes detecting both a single amplitude damping error
+and multiple dephasing errors: detecting {Xi, Yi, Zi}
+sufﬁces to detect an arbitrary single qubit error (includ-
+ing a single amplitude damping error), and detecting all
+Z-errors up to weight r will allow to correct ⌊r/2⌋ Z-
+errors. The error set is
+E{3} ={I}∪{X i, Yi : i = 1, . . . , n}∪Z r, (10)
+whereZr is the set of all Pauli Z operators up to weight
+r. A code that detects this error set in fact detects both
+an arbitrary error and r dephasing errors.
+III. A LGORITHM TO SEARCH FOR CWS CODES
+A QECC Q is a subspace of the space of n qubits (C2)⊗n
+(here we focus on quantum systems of dimension q = 2 ,
+but the approach can be generalized to qudits of dimension
+q > 2). For a K-dimensional code space spanned by the
+orthonormal basis {|ψi⟩ : i = 1, . . . , K} and an error set E,
+there is a physical operation detecting all the elements Eµ∈E
+(as well as their linear combinations) if the error detection
+condition [3], [22]
+⟨ψi|Eµ|ψj⟩ = cµδij, c µ∈ C, (11)
+is satisﬁed. The notation ((n, K)) is used to denote a QECC
+with length n and dimension K.
+Our goal is to ﬁnd good codes detecting the error sets E{j},
+for each of the three cases. For each code length n, we seek
+the largest dimension K of CWS codes for each error setE{j},
+j = 1, 2, 3. This is done through a maximum clique search [7],
+by using the algorithms and programs developed in [35].
+A. The CWS framework
+An ((n, K)) CWS code Q is described by two objects: 1)
+A stabilizer S that is an abelian subgroup of the n-qubit Pauli
+group, has order 2n, and does not contain −I; the group S
+is called the word stabilizer. 2) A set of K n-qubit Pauli
+operators W = {wℓ : ℓ = 1, . . . , K}, which are called the
+word operators. There is a unique quantum state|S⟩ stabilized
+by S, i.e., s|S⟩ =|S⟩ for all s∈ S. The code Q is then
+spanned by the basis vectors given by |wℓ⟩ = wℓ|S⟩.
+According to Eq. (11), the code Q detects the error set E
+if and only if ⟨wi|E|wj⟩ = cEδij for all E ∈E . When E
+consists of Pauli matrices, this error-detecting condition can
+be written in terms of S and wi as below [9]:
+For all E∈E ,
+∀i̸= j : w†
+i Ewj /∈± S (12)
+and
+(
+∀i : w†
+i Ewi /∈± S
+)
+or (13)
+(
+∀i : w†
+i Ewi∈ S
+)
+or (14)
+(
+∀i : w†
+i Ewi∈− S
+)
+. (15)
+If condition (13) holds for all E∈E different from identity,
+then the code Q is nondegenerate, otherwise it is degenerate.
+2016 IEEE International Symposium on Information Theory
+2265
+
+B. The CWS standard form
+Every ((n, K)) CWS code can be transformed, by local
+Clifford operations, into a standard form [9], where the word
+operators take the form wℓ = Z cℓ and the word stabilizer
+has generators of the form Si = XiZ ri , for some choices of
+classical n-bit strings cℓ and ri. Here Z cℓ = Zcℓ,1⊗. . .⊗Zcℓ,n.
+In the standard form, any n-qubit Pauli error, which can
+be written in the form E =±Z vX u for some classical n-bit
+strings v and u, can be translated to classical errors via the
+map
+ClS(E =±Z vX u) = v⊕
+n⨁
+i=1
+(u)iri. (16)
+Now for the word operators{Z cℓ : cℓ∈C} , the error detec-
+tion condition requires that the classical binary code C detects
+all errors from Cl S(E), and that for each E∈E
+ClS(E)̸= 0 (17)
+or ∀ℓ : Z cℓ E = EZ cℓ . (18)
+If Eq. (17) holds for all E∈E , the CWS code is nondegen-
+erate, otherwise it is degenerate.
+C. Local Clifford operations
+To get to the standard form, one needs to apply local
+Clifford (LC) operations of the form L = ⨂
+i Li, where Li
+are single-qubit Clifford operations [9]. This transforms the
+stabilizer S and word operators {wℓ} to the standard form,
+but at the same time also changes the error model.
+For the depolarizing channel given in Eq. (2), the error set is
+invariant under LC operations, since in this model essentially
+all single-qubit errors happen equally likely. Therefore, in or-
+der to search for a CWS code, one can simply use the standard
+form by starting from a stabilizer of the form Si = XiZ ri,
+which corresponds to a graph state [19]. For a ﬁxed length n,
+it is sufﬁcient to consider all graph states up to LC equivalence
+as classiﬁed in [10].
+Being able to restrict the search to graph states up to LC
+equivalence, instead of all stabilizer states of length n, has
+dramatically reduced the search space, and exhaustive search
+for single-error-correcting codes for the depolarizing channel
+up to length n = 10 has been carried out [20]. It turns out that
+the best CWS code with length n = 9 has dimension K = 12,
+beating the best stabilizer code of dimension 23 = 8 [36]; for
+n = 10 the best CWS code has dimension K = 24 , again
+beating the best stabilizer code of dimension 24 = 16 [20].
+For the asymmetric channels as given in Eq. (7), however,
+considering only all graphs states as classiﬁed in [10] and the
+error sets E{j} (j = 1, 2, 3) is not sufﬁcient to exhaustively
+search for all possible CWS codes. This is due to the asymme-
+try between pxy and pz, which implies that the error sets are
+no longer invariant under LC operations. Therefore, in order
+to exhaustively search for all possible CWS codes by using
+the standard form, one will need to check all the possible error
+sets that are LC equivalent to a given E{j}.
+Recall that the single-qubit Clifford group is generated by
+the Hadamard operator H and the phase operator P as given
+below [4], [14]
+H = 1
+√
+2
+(1 1
+1 −1
+)
+, P =
+(1 0
+0 i
+)
+. (19)
+Since overall phase factors can be ignored, we only need
+to consider the action of the Clifford group on the Pauli
+matrices X, Y, Z modulo phase factors. The Clifford group
+acts as the permutation group S3 on three letters (we use
+1, 2, 3 to denote X, Y, Z, respectively). The group S3 has
+order six, with the elements given by (in cycle notation)
+{id, (123), (132), (12), (13), (23)}. All error sets E{j}, j =
+1, 2, 3, are invariant with respect to interchanging X and Y .
+Hence it is sufﬁcient to consider one representative from
+each of the three right cosets of (12), given by {id, (12)},
+{(13), (132)}, and{(23), (123)}. So effectively, we only need
+to test the three permutations {id, (13), (23)}.
+Therefore, for each of the error sets E{j}, we have three
+cases for each qubit i: no permutation, permute Y and Z,
+or permute X and Z. To search for a length n code, this
+will reduce the total number of error sets from 6n to 3n
+for each graph state to be tested. Compared to codes for the
+depolarizing channel, the search space is enlarged by a factor
+of 3n, due to the asymmetry between pxy and pz. Nevertheless,
+we can still handle the search for small n, in particular for the
+error setsE{j}, j = 1, 2, 3, up to length n = 9.
+IV. R ESULTS
+As described above, in our search algorithm, we start from
+the CWS standard form and transform the error setE{j} by LC
+operations. This has no effect on the code parameters ((n, K))
+found. However, to present the CWS codes found, we ﬁx the
+error set E{j} and equivalently transform the CWS standard
+form into a general CWS code.
+A. Codes correcting a single amplitude damping error
+We have conducted an exhaustive search for the error set
+E{1} up to length n = 9, resulting in CWS codes correcting
+a single amplitude damping error. As mentioned above, the
+codes found not only correct a single error given by the Kraus
+operator A1, but are able to also correct a single error A†
+1. In
+other words, the codes correct both single X errors and single
+Y errors (and detect single Z errors as well). We summarize
+our results in Table I.
+As shown in Table I, for the lengths 6, 7, 8, 9, our codes
+outperform the best single-error-correcting codes for the de-
+polarizing channel—which also correct the error set E{1}, i.e.,
+a single amplitude-damping error. In particular, for lengths 8
+and 9, the best CWS codes we have found (of dimensions 10
+and 20 respectively) are non-additive codes.
+For lengths 6, 8, 9, our codes also outperform the best
+known CSS codes that are speciﬁcally designed to detect the
+error setE{1}, based on a construction proposed in [14] (see
+also [32]). Therefore, for these lengths, we have found good
+codes that outperform all the previously known constructions
+for detecting the error set E{1}.
+2016 IEEE International Symposium on Information Theory
+2266
+
+TABLE I
+Dimension K of CWS codes ((n, K)) detecting the error set E{1} for
+different lengths n. The column d = 3 lists the largest dimension of CWS
+codes that correct a single arbitrary error. The column E{1} lists the largest
+dimension of CWS codes found detecting the error set E{1}. The column
+CSS lists the largest dimension of the known Calderbank-Shor-Steane (CSS)
+codes [4], [33] that can correct the error set E{1}, based on a construction
+proposed in [14]. The column GF(3) lists the largest dimension of codes
+correcting a single amplitude damping error based on a construction proposed
+in [32], which are concatenated codes with ternary outer codes.
+n d = 3 [4], [36] E{1} CSS [14] GF(3) [32]
+5 2 2 2 2
+6 2 4 2 5
+7 2 8 8 8
+8 8 10 8 16
+9 12 20 16 24
+Notice that the existence of a CWS code with dimension
+K = 4 , and hence a subcode of dimension 3, implies the
+existence of a stabilizer code with the same parameters [7,
+Theorem 7]. Hence the ((6, 4)) codes we found, as listed in
+Table I, include stabilizer codes encoding two qubits. As an
+example, one such code has stabilizer S generated by
+X X I I Z Z
+X Z I Z I X
+Z I Y Z Y Z
+I I Z X I Z
+It is straightforward to check that this code detects the error
+setE{1}, since no element in E{1} is also in C(S)\ S, where
+C(S) is the centralizer of the stabilizer S.
+However, with the exception of n = 7, the single-error-
+correcting codes constructed in [32] have larger dimensions
+than our codes. The codes constructed in [32] are speciﬁcally
+designed to correct the Kraus operators A0 and A1, i.e. these
+codes cannot detect the error set E{1}. As detection of the
+errorsE{1} implies that a single error A†
+1 can be corrected
+as well, it is not a surprise that our codes have smaller
+dimensions.
+Notice that the codes constructed in [32] are also CWS
+codes, but errors are handled in a different way than the
+Pauli error set E{1}. It remains open how to generalize the
+method of [32] to deal with more than one amplitude damping
+error, while the error set E{1} can naturally be generalized,
+e.g., toE{2} for correcting two amplitude damping errors, as
+demonstrated next.
+B. Codes correcting two amplitude damping errors
+In this work, we have performed an exhaustive search for
+codes correcting two amplitude damping errors, i.e., detecting
+the error set E{2}, up to length n = 9. In fact, the resulting
+codes correct any combination of X and Z errors up to weight
+two, as well as a single Z error.
+No non-trivial CWS codes are found for length n ≤ 8.
+For length n = 9, two LC-inequivalent codes encoding a
+single qubit have been found. These are both stabilizer codes
+encoding a single qubit, since the corresponding classical code
+C is trivially linear [9].
+One code has the stabilizer S1 generated by
+X I I I I I I I Z
+Z I I I X Z I Z X
+I X I I I I I Z I
+I Z I I X I Z X Z
+I I X I I Z I I I
+I I Z I Y Y Z Z I
+I I I X I I Z I I
+I I I Z Y Z Y I Z
+The other code has the stabilizer S2 generated by
+X I I I I I I I Z
+Z I I I Z Z Z I X
+I X I I I I I Z I
+I Z I Z Z Y I Y Z
+I I X I I I Z I I
+I I Z Z Z X X Z I
+I I I X I Z I I I
+I I I I X I Z Z Z
+It is straightforward to check that these codes detect the
+error setE{2}, since no elements inE{2} are also in C(Si)\Si
+(for i = 1, 2). Furthermore, both codes are degenerate since
+some of the elements in E{2} are indeed in Si, for instance
+X1Z9.
+These codes outperform the ((10, 2)) code found in [11].
+Recall that Shor’s nine-qubit code, having the same parameters
+((9, 2)) as our codes, also corrects two amplitude damping
+errors [14]. However, Shor’s code only corrects the Kraus
+operators A0 and A1, but does not detect the error set E{2}.
+Therefore, for length n = 9, we have found good codes that
+outperform all the previous known constructions for detecting
+the error set E{2}.
+C. Codes detecting a single amplitude damping error and
+detecting multiple dephasing errors
+For the error set E{3}, we have performed an exhaustive
+search for different lengths n and Z-error detecting capabilities
+r up to n = 8, and a random search starting from randomly
+selected graph states for n = 9 and different r. Our results
+are listed in Table II. We compare our results with the best
+stabilizer codes that detect all errors up to weight r as given
+in [4], and the codes detecting a single amplitude damping
+errors and Z errors up to weight r as found in [12].
+As we can see from the table, for most lengths n and Z-
+error weight r, the CWS codes found outperform the known
+results. The entries for which we did not ﬁnd improvements
+are n = 6, r = 1 and n = 8, r = 1. Codes with r = 1 detect
+single Pauli errors, i.e., they are codes of minimum distance
+two. For even length, the corresponding stabilizer codes are
+known to have the largest possible dimension for single-error-
+detecting codes [29]. For odd length n = 5, 7, 9, we ﬁnd codes
+with parameters matching those of the code family ((2m +
+1, 3× 22m−3, 2)) given in [29]. Whenever the dimension is a
+power of two, the codes we found include stabilizer codes.
+These results demonstrate the power of the CWS framework
+for constructing good QECC, even with random search.
+2016 IEEE International Symposium on Information Theory
+2267
+
+TABLE II
+Dimension K of CWS codes detecting the error set E{3} (as deﬁned in equation 10) for different length n and parameter r (the weight of Z errors that
+the code is capable of detecting). For each value of r, the ﬁrst column lists the largest dimension of stabilizer codes that detect all errors up to weight r as
+given in [4]; the second column lists the largest dimension of asymmetric codes detecting a single amplitude damping error and phase errors up to weight r
+as found in [12]; the third column lists the largest dimension of the CWS codes found by our search for codes detecting the error set E{3}. ‘−’ means that
+no non-trivial codes exist based on the construction. The numbers labeled with ∗ are the best parameters found by random search; otherwise the maximal
+dimension is obtained by exhaustive search.
+n/r 1 2 3 4 5 6 7
+stab. [12] CWS stab. [12] CWS stab. [12] CWS stab. [12] CWS stab. [12] CWS stab. [12] CWS stab. [12] CWS
+5 4 5 6 2 − 4 − − 2 − − 2 − − − − − − − − −
+6 16 16 16 2 2 8 − − 4 − − 2 − − 2 − − − − − −
+7 16 22 24 2 8 16 − − 8 − − 2 − − 2 − − 2 − − −
+8 64 64 64 8 8 20 − 8 16 − − 4 − − 2 − − 2 − − 2
+9 64 93 96∗ 8 16 40∗ − 8 20∗ − − 6∗ − − 4∗ − − 2∗ − − 2∗
+ACKNOWLEDGEMENTS
+We thank Dr. Jingen Xiang for providing us computer pro-
+grams for maximum clique search. TJ and BZ are supported
+by NSERC.
+REFERENCES
+[1] P. Aliferis and J. Preskill, “Fault-tolerant quantum computation against
+biased noise,” Physical Review A, vol. 78, no. 5, p. 052331, 2008.
+[2] S. Beigi, I. L. Chuang, M. Grassl, P. Shor, and B. Zeng, “Graph
+concatenation for quantum codes,” Journal of Mathematical Physics,
+vol. 52, no. 2, p. 022201, 2011.
+[3] C. H. Bennett, D. P. DiVincenzo, J. A. Smolin, and W. K. Wootters,
+“Mixed-state entanglement and quantum error correction,” Physical
+Review A, vol. 54, no. 5, pp. 3824–3851, 1996.
+[4] A. R. Calderbank, E. Rains, P. W. Shor, and N. J. A. Sloane, “Quantum
+error correction via codes over GF (4),” IEEE Transactions on Infor-
+mation Theory, vol. 44, no. 4, pp. 1369–1387, 1998.
+[5] A. R. Calderbank and P. W. Shor, “Good quantum error-correcting codes
+exist,” Physcial Review A, vol. 54, no. 2, pp. 1098–1105, 1996.
+[6] X. Chen, B. Zeng, and I. L. Chuang, “Nonbinary codeword-stabilized
+quantum codes,” Physical Review A, vol. 78, no. 6, p. 062315, 2008.
+[7] I. L. Chuang, A. Cross, G. Smith, J. Smolin, and B. Zeng, “Codeword
+stabilized quantum codes: Algorithm and structure,” Journal of Mathe-
+matical Physics, vol. 50, no. 4, p. 042109, 2009.
+[8] I. L. Chuang, D. W. Leung, and Y . Yamamoto, “Bosonic quantum codes
+for amplitude damping,” Physical Review A, vol. 56, no. 2, pp. 1114–
+1125, 1997.
+[9] A. Cross, G. Smith, J. A. Smolin, and B. Zeng, “Codeword stabilized
+quantum codes,” IEEE Transactions on Information Theory, vol. 55,
+no. 1, pp. 433–438, 2009.
+[10] L. E. Danielsen and M. G. Parker, “On the classiﬁcation of all self-dual
+additive codes over GF(4) of length up to 12,” Journal of Combinatorial
+Theory, Series A, vol. 113, no. 7, pp. 1351–1367, 2006.
+[11] R. Duan, M. Grassl, Z. Ji, and B. Zeng, “Multi-error-correcting ampli-
+tude damping codes,” in Proceedings 2010 IEEE International Sympo-
+sium on Information Theory (ISIT 2010), 2010, pp. 2672–2676.
+[12] M. F. Ezerman and M. Grassl, “Asymmetric quantum codes detecting
+a single amplitude error,” in Proceedings 2013 IEEE International
+Symposium on Information Theory (ISIT 2013), 2013, pp. 922–926.
+[13] A. S. Fletcher, P. W. Shor, and M. Z. Win, “Channel-adapted quantum
+error correction for the amplitude damping channel,” IEEE Transactions
+on Information Theory, vol. 54, no. 12, pp. 5705–5718, 2008.
+[14] D. Gottesman, “Stabilizer codes and quantum error correction,” Ph.D.
+dissertation, California Institute of Technology, Pasadena, CA, 1997.
+[15] M. Grassl and M. R ¨otteler, “Non-additive quantum codes from Goethals
+and Preparata codes,” in Proceedings 2008 IEEE Information Theory
+Workshop (ITW 2008), 2008, pp. 396–400.
+[16] ——, “Quantum Goethals-Preparata codes,” in Proceedings 2008 IEEE
+International Symposium on Information Theory (ISIT 2008), 2008, pp.
+300–304.
+[17] M. Grassl, P. Shor, G. Smith, J. Smolin, and B. Zeng, “Generalized
+concatenated quantum codes,” Physical Review A, vol. 79, no. 5, p.
+050306, 2009.
+[18] M. Grassl, Z. Wei, Z.-Q. Yin, and B. Zeng, “Quantum error-correcting
+codes for amplitude damping,” in Proceedings 2014 IEEE International
+Symposium on Information Theory (ISIT 2014), 2014, pp. 906–910.
+[19] M. Hein, J. Eisert, and H. J. Briegel, “Multiparty entanglement in graph
+states,” Physical Review A, vol. 69, p. 062311, 2004.
+[20] D. Hu, W. Tang, M. Zhao, Q. Chen, S. Yu, and C. H. Oh, “Graphical
+nonbinary quantum error-correcting codes,” Physical Review A, vol. 78,
+no. 1, p. 012306, 2008.
+[21] L. Ioffe and M. M ´ezard, “Asymmetric quantum error-correcting codes,”
+Physical Review A, vol. 75, no. 3, p. 032345, 2007.
+[22] E. Knill and R. Laﬂamme, “Theory of quantum error-correcting codes,”
+Physical Review A, vol. 55, no. 2, pp. 900–911, 1997.
+[23] R. Lang and P. W. Shor, “Nonadditive quantum error correcting
+codes adapted to the amplitude damping channel,” arXiv preprint
+arXiv:0712.2586, 2007.
+[24] D. W. Leung, M. A. Nielsen, I. L. Chuang, and Y . Yamamoto, “Ap-
+proximate quantum error correction can lead to better codes,” Physical
+Review A, vol. 56, no. 4, pp. 2567–2573, 1997.
+[25] Y . Li, I. Dumer, and L. P. Pryadko, “Clustered error correction of
+codeword-stabilized quantum codes,” Physical Review Letters, vol. 104,
+no. 19, p. 190501, 2010.
+[26] S. Y . Looi, L. Yu, V . Gheorghiu, and R. B. Grifﬁths, “Quantum error
+correcting codes using qudit graph states,” Physical Review A, vol. 78,
+no. 4, p. 042303, 2008.
+[27] M. A. Nielsen and I. L. Chuang, Quantum computation and quantum
+information. Cambridge University Press, 2010.
+[28] E. M. Rains, R. H. Hardin, P. W. Shor, and N. J. A. Sloane, “A
+nonadditive quantum code,” Physical Review Letters, vol. 79, no. 5,
+pp. 953–954, 1997.
+[29] E. M. Rains, “Quantum codes of minimum distance two,” IEEE Trans-
+actions on Information theory, vol. 45, no. 1, pp. 266–271, 1999.
+[30] P. K. Sarvepalli, A. Klappenecker, and M. R ¨otteler, “Asymmetric quan-
+tum LDPC codes,” in Proceedings 2008 IEEE International Symposium
+on Information Theory (ISIT 2008), 2008, pp. 305–309.
+[31] ——, “Asymmetric quantum codes: constructions, bounds and perfor-
+mance,” in Proceedings of the Royal Society of London A: Mathematical,
+Physical and Engineering Sciences, vol. 465, no. 2105. The Royal
+Society, 2009, pp. 1645–1672.
+[32] P. W. Shor, G. Smith, J. Smolin, and B. Zeng, “High performance
+single-error-correcting quantum codes for amplitude damping,” IEEE
+Transactions on Information Theory, vol. 57, no. 10, pp. 7180–7188,
+2011.
+[33] A. Steane, “Multiple particle interference and quantum error correction,”
+Proceedings of the Royal Society of London, Series A, vol. 452, no. 1954,
+pp. 2551–2577, 1996.
+[34] Y .-J. Wang, B. Zeng, M. Grassl, and B. C. Sanders, “Stabilizer formalism
+for generalized concatenated quantum codes,” in Proceedings 2013 IEEE
+International Symposium on Information Theory (ISIT 2013), 2013, pp.
+529–533.
+[35] J. Xiang, C. Guo, and A. Aboulnaga, “Scalable maximum clique compu-
+tation using MapReduce,” in Proceedings 2013 IEEE 29th International
+Conference on Data Engineering (ICDE), 2013, pp. 74–85.
+[36] S. Yu, Q. Chen, C. Lai, and C. Oh, “Nonadditive quantum error-
+correcting code,” Physical Review Letters, vol. 101, no. 9, p. 090501,
+2008.
+2016 IEEE International Symposium on Information Theory
+2268

@@ -9,6 +9,8 @@ The following example uses a 4-qubit star graph (where qubit 1 is the center con
 Because the AD channel is defined by Kraus operators that are not Pauli operators, the search first maps them to their linear span in the Pauli group. To correct a single AD error, the code must detect the set $E^{\{1\}} = \{I, X_i, Y_i, Z_i, X_i X_j, Y_i Y_j, X_i Y_j\}$.
 
 The program applies the X-Z rule ($Cl_G(E) = v \oplus u\Gamma$) to transform these quantum errors into classical bit-flip patterns.
+(cross et al)
+(chuang et al)
 Adjacency Matrix ($\Gamma$): $\begin{pmatrix} 0& 1  & 1 & 1 \\ 1 & 0 & 0 & 0 \\ 1 & 0 & 0 & 0 \\ 1 & 0 & 0 & 0\end{pmatrix}$
 
 Mapping a Phase Flip ($Z_1$): $u=0, v=1000$. $Cl_G(Z_1) = \mathbf{1000}$.

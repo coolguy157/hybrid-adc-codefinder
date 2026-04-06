@@ -4,3 +4,6 @@ preprocessed_data/candidates_n12.jsonl
 .vscode/
 __pycache__/
 /old/__pycache__/
+.venv/
+# ignore venv
+venv/
